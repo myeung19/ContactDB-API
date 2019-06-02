@@ -5,6 +5,7 @@ import edu.neumont.csc380.contactdatabse.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,7 @@ public class UserRestContoller
 
     @GetMapping
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<User> getAllUser()
     {
         return userRepo.findAll();
@@ -30,6 +32,7 @@ public class UserRestContoller
 
     @GetMapping("/{userId}")
     @Transactional
+    @PreAuthorize("hasAuthority('USER', 'ADMIN')")
     public User getUser(@PathVariable int userId)
     {
         return userRepo.getOne(userId);
@@ -48,15 +51,9 @@ public class UserRestContoller
                 .body(i);
     }
 
-    @PostMapping
-    @Transactional
-    public void addUser(@RequestBody User newUser)
-    {
-        userRepo.save(newUser);
-    }
-
     @PutMapping("/{userId}")
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void updateWholeUser(@PathVariable int userId, @RequestBody User updatedUser)
     {
 
@@ -64,6 +61,7 @@ public class UserRestContoller
 
     @PatchMapping("/{userId}")
     @Transactional
+    @PreAuthorize("hasAuthority('USER', 'ADMIN')")
     public void updatePartUser(@PathVariable int userId, @RequestBody User updatedUser)
     {
 
@@ -71,6 +69,7 @@ public class UserRestContoller
 
     @DeleteMapping("/{userId}")
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(@PathVariable int userId)
     {
         userRepo.deleteById(userId);

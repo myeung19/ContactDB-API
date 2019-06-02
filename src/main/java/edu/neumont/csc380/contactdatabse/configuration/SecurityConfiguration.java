@@ -27,8 +27,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     @Autowired
     private UserRepository userRepo;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder()
+    @Bean
+    public PasswordEncoder passwordEncoder()
     {
         return new BCryptPasswordEncoder();
     }
@@ -53,15 +53,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
         try
         {
             http
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/register", "/reset").permitAll()
-                    .antMatchers("/user/**").hasAuthority("USER") // All http methods are accecpted by default
-                    .anyRequest().authenticated()
-                    .and()
-                    .httpBasic()
-                    .and()
-                    .csrf().disable()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/register", "/reset").permitAll()
+                .antMatchers("/user/**").hasAuthority("USER") // All http methods are accecpted by default
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic()
+                .and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         }
         catch (Exception ex)
         {
@@ -81,7 +81,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 String password = auth.getCredentials().toString(); // Get the password as string
 
                 Optional<User> user = userRepo.findUserByUsername(username);
-                if (user.isPresent() && user.get().getPassword().equals(password))
+                if (user.isPresent() &&
+                        passwordEncoder().matches(password, user.get().getPassword()))
                     return new UsernamePasswordAuthenticationToken(
                             username,
                             password,

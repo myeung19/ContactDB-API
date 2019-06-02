@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 public class S3RestController
 {
@@ -46,11 +45,5 @@ public class S3RestController
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(Utils.getTypeFromFileName(fileName)))
                 .body(bytes);
-    }
-
-    @PostMapping
-    public void uploadToS3(String fileName, File file)
-    {
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
     }
 }

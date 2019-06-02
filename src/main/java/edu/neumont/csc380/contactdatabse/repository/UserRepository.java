@@ -15,21 +15,12 @@ public interface UserRepository extends JpaRepository<User, Integer>
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     User getOne(Integer id);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<User> findUserByUsername(String userName);
+
+    Optional<User> findUserByEmail(String email);
 
     List<User> findUserBySelfContactId(int selContactId);
 
     List<User> findUserBySelfContactFirstNameAndSelfContactLastName(String fName, String lName);
-
-    @Query(
-            "select u from User u where u.selfContact.firstName = :fName"
-    )
-    List<User> queryByfirstName(@Param("fName") String fName);
-
-    @Query(
-            "select u from User u where u.selfContact.lastName = :lName"
-    )
-    List<User> queryByLastName(@Param("lName") String lName);
 
 }
