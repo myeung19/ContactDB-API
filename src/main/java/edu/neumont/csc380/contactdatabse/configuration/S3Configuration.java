@@ -22,7 +22,7 @@ public class S3Configuration
     @Value("${cloud.aws.credentials.secret-key}")
     private String secretKey;
 
-    @Value("${cloud.aws.region}")
+    @Value("${cloud.aws.region.static}")
     private String region;
 
     @Bean
