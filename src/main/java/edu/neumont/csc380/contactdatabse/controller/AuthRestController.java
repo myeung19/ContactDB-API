@@ -35,7 +35,7 @@ public class AuthRestController
     @Value("${spring.mail.username}")
     private String from;
 
-    @GetMapping
+    @GetMapping("/")
     public String getHomeContent()
     {
         return "API currently working";
