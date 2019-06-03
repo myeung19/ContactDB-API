@@ -1,5 +1,6 @@
 package edu.neumont.csc380.contactdatabse.controller;
 
+import edu.neumont.csc380.contactdatabse.exception.UserNotFoundException;
 import edu.neumont.csc380.contactdatabse.repository.UserRepository;
 import edu.neumont.csc380.contactdatabse.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,9 @@ public class UserRestContoller
     @GetMapping("/{userId}")
     @Transactional
     @PreAuthorize("hasAuthority('USER', 'ADMIN')")
-    public User getUser(@PathVariable int userId)
+    public User getUser(@PathVariable String userName)
     {
-        return userRepo.getOne(userId);
+        return userRepo.findUserByUsername(userName).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     @PostMapping("i")

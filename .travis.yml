@@ -1,0 +1,25 @@
+language: java
+
+jdk:
+  - openjdk8
+
+cache:
+  directories:
+    - $HOME/.m2
+
+script:
+  - mvn clean install -DskipTests=True
+
+deploy:
+  install: true
+  provider: elasticbeanstalk
+  access_key_id: "$ACCESS_KEY_ID"
+  secret_access_key: "$SECRET_ACCESS_KEY"
+  region: "us-west-2"
+  app: "$APP_NAME"
+  env: "$APP_ENV"
+  bucket_name: "$BUCKET_NAME"
+  zip_file: target/contact-database-api-1.0-SNAPSHOT.war
+  skip_cleanup: true # Need to disable cleanup to ensure the artifact get deployed, not the source code
+  on:
+    branch: master
