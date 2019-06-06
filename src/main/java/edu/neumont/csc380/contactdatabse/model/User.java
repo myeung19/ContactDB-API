@@ -1,5 +1,7 @@
 package edu.neumont.csc380.contactdatabse.model;
 
+import edu.neumont.csc380.contactdatabse.model.dto.UserDTO;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +12,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements UserDetails
@@ -42,27 +48,9 @@ public class User implements UserDetails
     @Fetch(FetchMode.SELECT)
     private List<Role> roles;
 
-    public User()
-    {}
-
-    public User(Contact selfContact, List<Contact> contacts, String username, String email, String password, List<Role> roles)
+    public UserDTO getUserDTO()
     {
-        this.selfContact = selfContact;
-        this.contacts = contacts;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
+        return new UserDTO(selfContact, contacts, username, email, roles);
     }
 
     public Contact getSelfContact()
@@ -73,41 +61,6 @@ public class User implements UserDetails
     public void setSelfContact(Contact selfContact)
     {
         this.selfContact = selfContact;
-    }
-
-    public List<Contact> getContacts()
-    {
-        return contacts;
-    }
-
-    public void setContacts(List<Contact> contacts)
-    {
-        this.contacts = contacts;
-    }
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
-
-    public String getEmail()
-    {
-        return email;
-    }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
-
-    public String getPassword()
-    {
-        return password;
     }
 
     public void setPassword(String password)
@@ -128,7 +81,7 @@ public class User implements UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
-        return this.getRoles().stream()
+        return this.roles.stream()
                 .map(role -> new GrantedAuthority()
                 {
                     @Override
@@ -138,6 +91,18 @@ public class User implements UserDetails
                     }
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getPassword()
+    {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername()
+    {
+        return this.username;
     }
 
     @Override

@@ -12,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
+@RequestMapping("media")
 public class S3RestController
 {
     @Autowired
@@ -37,8 +36,8 @@ public class S3RestController
         //TODO figure out how to return mulitple file
     }
 
-    @GetMapping("/{fileName}")
-    public ResponseEntity<byte[]> getFileFromS3(@PathVariable String fileName) throws IOException
+    @GetMapping("{username}/{fileName}")
+    public ResponseEntity<byte[]> getFileFromS3(@PathVariable String username, @PathVariable String fileName) throws IOException
     {
         S3Object file = amazonS3Client.getObject(new GetObjectRequest(bucket, fileName));
         byte[] bytes = IOUtils.toByteArray(file.getObjectContent());

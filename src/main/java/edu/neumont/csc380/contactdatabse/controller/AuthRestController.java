@@ -1,6 +1,8 @@
 package edu.neumont.csc380.contactdatabse.controller;
 
 import edu.neumont.csc380.contactdatabse.exception.UserAlreadyExistException;
+import edu.neumont.csc380.contactdatabse.exception.UserNotFoundException;
+import edu.neumont.csc380.contactdatabse.model.Contact;
 import edu.neumont.csc380.contactdatabse.model.User;
 import edu.neumont.csc380.contactdatabse.repository.UserRepository;
 import edu.neumont.csc380.util.Utils;
@@ -20,6 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/")
 public class AuthRestController
 {
@@ -41,6 +44,10 @@ public class AuthRestController
         return "API currently working";
     }
 
+    @PostMapping("/login")
+    @Transactional
+    public void login() { }
+
     @PostMapping("/register")
     @Transactional
     public void register(@RequestBody User newUser)
@@ -48,8 +55,10 @@ public class AuthRestController
         Optional<User> optionalUser = userRepo.findUserByUsername(newUser.getUsername());
         if(optionalUser.isPresent())
             throw new UserAlreadyExistException("User " + newUser.getUsername() + " already exists");
+
         newUser.setRoles(Collections.singletonList(User.Role.USER));
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        userRepo.save(newUser);
     }
 
     @PostMapping("/changePassword")

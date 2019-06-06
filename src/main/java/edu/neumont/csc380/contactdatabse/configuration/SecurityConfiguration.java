@@ -55,11 +55,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
             http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.POST, "/register", "/reset").permitAll()
+                .antMatchers(HttpMethod.POST, "login", "/register", "/reset").permitAll()
                 .antMatchers("/user/**").hasAuthority("USER") // All http methods are accecpted by default
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
+                .and()
+                .cors()
                 .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

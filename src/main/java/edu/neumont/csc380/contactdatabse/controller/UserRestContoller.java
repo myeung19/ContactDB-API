@@ -1,6 +1,9 @@
 package edu.neumont.csc380.contactdatabse.controller;
 
 import edu.neumont.csc380.contactdatabse.exception.UserNotFoundException;
+import edu.neumont.csc380.contactdatabse.model.Contact;
+import edu.neumont.csc380.contactdatabse.model.dto.UserDTO;
+import edu.neumont.csc380.contactdatabse.repository.ContactRepository;
 import edu.neumont.csc380.contactdatabse.repository.UserRepository;
 import edu.neumont.csc380.contactdatabse.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,9 @@ public class UserRestContoller
     @Autowired
     private UserRepository userRepo;
 
+    @Autowired
+    private ContactRepository contactRepo;
+
     @GetMapping
     @Transactional
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -31,12 +37,14 @@ public class UserRestContoller
         return userRepo.findAll();
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{username}")
     @Transactional
     @PreAuthorize("hasAuthority('USER', 'ADMIN')")
-    public User getUser(@PathVariable String userName)
+    public UserDTO getUser(@PathVariable String username)
     {
-        return userRepo.findUserByUsername(userName).orElseThrow(() -> new UserNotFoundException("User not found"));
+        return userRepo.findUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found"))
+                .getUserDTO();
     }
 
     @PostMapping("i")
@@ -52,20 +60,29 @@ public class UserRestContoller
                 .body(i);
     }
 
-    @PutMapping("/{userId}")
-    @Transactional
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public void updateWholeUser(@PathVariable int userId, @RequestBody User updatedUser)
-    {
-
-    }
-
-    @PatchMapping("/{userId}")
+    @PatchMapping("/{username}")
     @Transactional
     @PreAuthorize("hasAuthority('USER', 'ADMIN')")
-    public void updatePartUser(@PathVariable int userId, @RequestBody User updatedUser)
+    public void updateUserInfo(@PathVariable String username, @RequestBody Contact updatedContact)
     {
+        User user = userRepo.findUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
+        Contact selfContact = null;
+
+        if(user.getSelfContact() == null)
+        {
+            selfContact = new Contact();
+            user.setSelfContact(selfContact);
+        }
+
+        selfContact.setFirstName(updatedContact.getFirstName());
+        selfContact.setLastName(updatedContact.getLastName());
+        selfContact.setPhones(updatedContact.getPhones());
+        selfContact.setNote(updatedContact.getNote());
+
+        contactRepo.save(selfContact);
+        userRepo.save(user);
     }
 
     @DeleteMapping("/{userId}")
@@ -75,5 +92,4 @@ public class UserRestContoller
     {
         userRepo.deleteById(userId);
     }
-
 }
