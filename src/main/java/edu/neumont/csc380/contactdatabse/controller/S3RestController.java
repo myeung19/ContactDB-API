@@ -37,8 +37,6 @@ public class S3RestController
         ObjectListing objectListing = amazonS3Client.listObjects(listBucketsRequest);
 
         List<S3ObjectSummary> s3ObjectSummary = objectListing.getObjectSummaries();
-
-        //TODO figure out how to return mulitple file
     }
 
     @GetMapping("{username}/{fileName}")

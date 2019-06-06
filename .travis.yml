@@ -19,7 +19,7 @@ deploy:
   app: "$APP_NAME"
   env: "$APP_ENV"
   bucket_name: "$BUCKET_NAME"
-  zip_file: target/contact-database-api-1.0-SNAPSHOT.war
+  zip_file: target/contactdb-api.war
   skip_cleanup: true # Need to disable cleanup to ensure the artifact get deployed, not the source code
   on:
     branch: master
