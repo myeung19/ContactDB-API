@@ -1,7 +1,6 @@
 package edu.neumont.csc380.contactdatabse.controller;
 
 import edu.neumont.csc380.contactdatabse.model.Contact;
-import edu.neumont.csc380.contactdatabse.model.User;
 import edu.neumont.csc380.contactdatabse.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

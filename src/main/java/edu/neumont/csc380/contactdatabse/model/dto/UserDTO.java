@@ -2,9 +2,7 @@ package edu.neumont.csc380.contactdatabse.model.dto;
 
 import edu.neumont.csc380.contactdatabse.model.Contact;
 import edu.neumont.csc380.contactdatabse.model.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 

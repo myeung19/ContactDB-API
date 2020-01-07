@@ -1,8 +1,6 @@
 package edu.neumont.csc380.contactdatabse.controller;
 
 import edu.neumont.csc380.contactdatabse.exception.UserAlreadyExistException;
-import edu.neumont.csc380.contactdatabse.exception.UserNotFoundException;
-import edu.neumont.csc380.contactdatabse.model.Contact;
 import edu.neumont.csc380.contactdatabse.model.User;
 import edu.neumont.csc380.contactdatabse.repository.UserRepository;
 import edu.neumont.csc380.util.Utils;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.security.Principal;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;

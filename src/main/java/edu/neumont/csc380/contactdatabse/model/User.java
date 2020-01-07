@@ -1,7 +1,10 @@
 package edu.neumont.csc380.contactdatabse.model;
 
 import edu.neumont.csc380.contactdatabse.model.dto.UserDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;

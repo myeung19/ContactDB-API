@@ -2,10 +2,10 @@ package edu.neumont.csc380.contactdatabse.controller;
 
 import edu.neumont.csc380.contactdatabse.exception.UserNotFoundException;
 import edu.neumont.csc380.contactdatabse.model.Contact;
+import edu.neumont.csc380.contactdatabse.model.User;
 import edu.neumont.csc380.contactdatabse.model.dto.UserDTO;
 import edu.neumont.csc380.contactdatabse.repository.ContactRepository;
 import edu.neumont.csc380.contactdatabse.repository.UserRepository;
-import edu.neumont.csc380.contactdatabse.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 @RestController
 @CrossOrigin
